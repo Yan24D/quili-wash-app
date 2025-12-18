@@ -148,7 +148,7 @@ git --version     # 2.x+
 
 ### 1. Clonar el Repositorio
 ```bash
-git clone https://github.com/TU-USUARIO/quili-wash-app.git
+git clone https://github.com/Yan24D/quili-wash-app.git
 cd quili-wash-app
 ```
 
@@ -305,7 +305,7 @@ timeout: 10000, // 10 segundos
 
 ### Inicio de Sesión
 1. Abre la aplicación
-2. Ingresa credenciales:
+2. Ingresa credenciales de prueba:
    - **Email:** admin@quiliwash.com
    - **Password:** admin123
 3. Click en "Iniciar Sesión"
@@ -495,15 +495,15 @@ Este proyecto está bajo la Licencia MIT. Ver archivo [LICENSE](LICENSE) para m�
 
 **María Victoria Carabalí Caicedo**
 - 📧 Email: maria.victoria.carabali@correounivalle.edu.co
-- 🎓 Código: 202358430
+- 🎓 Código: *******
 
-**Jean Carlos Campo Gracia**
+**Jean Carlos Campo Garcia**
 - 📧 Email: jean.campo@correounivalle.edu.co
-- 🎓 Código: 202376467
+- 🎓 Código: *******
 
 **Stefany Yotengo Acosta**
 - 📧 Email: stefany.yotengo@correounivalle.edu.co
-- 🎓 Código: 202376584
+- 🎓 Código: ******
 
 ### Docente
 **Wilson Arley Rodríguez**
@@ -553,8 +553,8 @@ Para soporte técnico o consultas:
 
 **Desarrollado con ❤️ en Colombia 🇨🇴**
 
-[![GitHub Stars](https://img.shields.io/github/stars/TU-USUARIO/quili-wash-app?style=social)](https://github.com/TU-USUARIO/quili-wash-app)
-[![GitHub Forks](https://img.shields.io/github/forks/TU-USUARIO/quili-wash-app?style=social)](https://github.com/TU-USUARIO/quili-wash-app)
+[![GitHub Stars](https://img.shields.io/github/stars/TU-USUARIO/quili-wash-app?style=social)](https://github.com/Yan24D/quili-wash-app)
+[![GitHub Forks](https://img.shields.io/github/forks/TU-USUARIO/quili-wash-app?style=social)](https://github.com/Yan24D/quili-wash-app)
 
 [⬆ Volver arriba](#-quili-wash---sistema-de-gestión-para-lavadero-de-vehículos)
 
