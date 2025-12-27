@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import { ActivityIndicator, Button, Text, TextInput } from 'react-native-paper';
 import { AuthContext } from '../../contexts/AuthContext';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -62,8 +65,9 @@ export default function LoginScreen() {
             autoCapitalize="none"
             style={styles.input}
             outlineColor="#000000ff"
-            activeOutlineColor="#2563eb"
-            left={<TextInput.Icon icon="email" />}
+            activeOutlineColor={Colors.primary}
+            left={<TextInput.Icon icon="email" 
+            textColor={Colors.text}/>}
           />
 
           <TextInput
@@ -96,7 +100,7 @@ export default function LoginScreen() {
           </Button>
 
           <Text style={styles.helpText}>
-            Usa tus credenciales del sistema de escritorio
+            Usa tus credenciales del sistema de escritorio existente.
           </Text>
         </View>
       </ScrollView>
