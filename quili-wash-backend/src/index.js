@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { testConnection } = require('./config/database');
+const { initDatabase } = require('./scripts/initDatabase');
 
 // Importar rutas
 const authRoutes = require('./routes/authRoutes');
@@ -45,5 +46,15 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
   console.log(`📡 Accesible en todas las interfaces de red`);
+  
+  // Probar conexión
   await testConnection();
+  
+  // Inicializar base de datos
+  try {
+    await initDatabase();
+    console.log('🎉 Base de datos inicializada correctamente');
+  } catch (error) {
+    console.error('❌ Error al inicializar base de datos:', error);
+  }
 });
