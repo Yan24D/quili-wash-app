@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 // IMPORTANTE: Si vas a probar en un celular físico, cambia localhost por la IP de tu PC
-const API_URL = 'http://192.168.20.28:3000/api';
+const API_URL = 'https://quili-wash-app-production.up.railway.app/api';
 
 const api = axios.create({
   baseURL: API_URL,
