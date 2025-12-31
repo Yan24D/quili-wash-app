@@ -32,11 +32,15 @@ const crearRegistro = async (req, res) => {
     const lavador = lavadorResult.length > 0 ? lavadorResult[0].nombre_completo : null;
 
     // Insertar registro
+    // Obtener fecha y hora actual
+    const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const hora = new Date().toTimeString().split(' ')[0]; // HH:MM:SS
+
     const [result] = await pool.query(
       `INSERT INTO registros 
-      (vehiculo, placa, id_servicio, costo, porcentaje, lavador, id_lavador, observaciones, pago, id_usuario) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [vehiculo, placa || null, id_servicio, costo, porcentaje, lavador, id_lavador, observaciones || null, pago || 'Pendiente', id_usuario]
+      (fecha, hora, vehiculo, placa, id_servicio, costo, porcentaje, lavador, id_lavador, observaciones, pago, id_usuario) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [fecha, hora, vehiculo, placa || null, id_servicio, costo, porcentaje, lavador, id_lavador, observaciones || null, pago || 'Pendiente', id_usuario]
     );
 
     res.status(201).json({
