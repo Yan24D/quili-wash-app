@@ -1,5 +1,21 @@
 const { pool } = require('../config/database');
 
+// Función para obtener fecha/hora en zona horaria de Colombia (UTC-5)
+const obtenerFechaHoraColombia = () => {
+  const ahora = new Date();
+  // Ajustar a UTC-5 (Colombia)
+  const offsetColombia = -5 * 60; // minutos
+  const offsetActual = ahora.getTimezoneOffset(); // minutos
+  const diferencia = offsetColombia - offsetActual;
+  
+  ahora.setMinutes(ahora.getMinutes() + diferencia);
+  
+  const fecha = ahora.toISOString().split('T')[0]; // YYYY-MM-DD
+  const hora = ahora.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS
+  
+  return { fecha, hora };
+};
+
 // Crear un nuevo registro
 const crearRegistro = async (req, res) => {
   try {
@@ -31,11 +47,10 @@ const crearRegistro = async (req, res) => {
 
     const lavador = lavadorResult.length > 0 ? lavadorResult[0].nombre_completo : null;
 
-    // Insertar registro
-    // Obtener fecha y hora actual
-    const fecha = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    const hora = new Date().toTimeString().split(' ')[0]; // HH:MM:SS
+    // Obtener fecha y hora en zona horaria de Colombia
+    const { fecha, hora } = obtenerFechaHoraColombia();
 
+    // Insertar registro
     const [result] = await pool.query(
       `INSERT INTO registros 
       (fecha, hora, vehiculo, placa, id_servicio, costo, porcentaje, lavador, id_lavador, observaciones, pago, id_usuario) 
@@ -111,40 +126,38 @@ const getRegistros = async (req, res) => {
   }
 };
 
-// ✅ ACTUALIZADO: Obtener estadísticas para cierre de caja - SOLO SERVICIOS PAGADOS
+// ACTUALIZADO: Obtener estadísticas para cierre de caja - SOLO SERVICIOS PAGADOS
 const getCierreCaja = async (req, res) => {
   try {
     let { fecha } = req.query;
     
-    // Si no viene fecha, usar la fecha actual del servidor
+    // Si no viene fecha, usar la fecha actual en zona horaria de Colombia
     if (!fecha) {
-      const ahora = new Date();
-      // Ajustar a zona horaria de Colombia (UTC-5)
-      ahora.setHours(ahora.getHours() - 5);
-      fecha = ahora.toISOString().split('T')[0];
+      const { fecha: fechaColombia } = obtenerFechaHoraColombia();
+      fecha = fechaColombia;
     }
 
     console.log('📅 Consultando cierre de caja para fecha:', fecha);
 
-    // ✅ Ingresos totales del día - SOLO PAGADOS
+    // Ingresos totales del día - SOLO PAGADOS
     const [ingresos] = await pool.query(
       'SELECT COALESCE(SUM(costo), 0) as total FROM registros WHERE fecha = ? AND pago = "Pagado"',
       [fecha]
     );
 
-    // ✅ Comisiones pagadas - SOLO PAGADOS (ya estaba correcto)
+    // Comisiones pagadas - SOLO PAGADOS
     const [comisiones] = await pool.query(
       'SELECT COALESCE(SUM(costo * porcentaje / 100), 0) as total FROM registros WHERE fecha = ? AND pago = "Pagado"',
       [fecha]
     );
 
-    // ✅ Cantidad de servicios - SOLO PAGADOS
+    // Cantidad de servicios - SOLO PAGADOS
     const [servicios] = await pool.query(
       'SELECT COUNT(*) as total FROM registros WHERE fecha = ? AND pago = "Pagado"',
       [fecha]
     );
 
-    // ✅ Total de servicios pendientes (para información adicional)
+    // Total de servicios pendientes
     const [pendientes] = await pool.query(
       'SELECT COUNT(*) as total, COALESCE(SUM(costo), 0) as monto FROM registros WHERE fecha = ? AND pago = "Pendiente"',
       [fecha]
@@ -166,7 +179,6 @@ const getCierreCaja = async (req, res) => {
       ganancia_neta: gananciaNetaTotal,
       cantidad_servicios: cantidadServicios,
       promedio_por_servicio: promedioServicio,
-      // ✅ Información adicional sobre pendientes
       servicios_pendientes: cantidadPendientes,
       monto_pendiente: montoPendiente
     });
